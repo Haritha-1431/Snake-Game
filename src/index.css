@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Press+Start+2P&family=VT323&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Silkscreen", cursive;
+  --font-mono: "VT323", monospace;
+  --font-pixel: "Press Start 2P", cursive;
+  --color-glitch-cyan: #00ffff;
+  --color-glitch-magenta: #ff00ff;
+}
+
+@layer base {
+  body {
+    background-color: #000;
+    color: #fff;
+    cursor: crosshair;
+  }
+}
+
+@layer utilities {
+  @keyframes glitch {
+    0% { transform: translate(0) skew(0deg); }
+    2% { transform: translate(-2px, 1px) skew(5deg); }
+    4% { transform: translate(2px, -1px) skew(-5deg); }
+    6% { transform: translate(0) skew(0deg); }
+  }
+
+  @keyframes noise {
+    0% { transform: translate(0, 0); }
+    10% { transform: translate(-5%, -5%); }
+    20% { transform: translate(-10%, 5%); }
+    30% { transform: translate(5%, -10%); }
+    40% { transform: translate(-5%, 15%); }
+    50% { transform: translate(-10%, 5%); }
+    60% { transform: translate(15%, 0); }
+    70% { transform: translate(0, 10%); }
+    80% { transform: translate(-15%, 0); }
+    90% { transform: translate(10%, 5%); }
+    100% { transform: translate(5%, 0); }
+  }
+
+  @keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
+
+  @keyframes tear {
+    0% { clip-path: inset(0 0 0 0); }
+    20% { clip-path: inset(20% 0 50% 0); }
+    21% { clip-path: inset(10% 0 10% 0); }
+    40% { clip-path: inset(80% 0 5% 0); }
+    41% { clip-path: inset(0 0 0 0); }
+    100% { clip-path: inset(0 0 0 0); }
+  }
+
+  .glitch-text {
+    position: relative;
+    display: inline-block;
+  }
+
+  .glitch-text::before,
+  .glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+  }
+
+  .glitch-text::before {
+    left: 2px;
+    text-shadow: -2px 0 #ff00ff;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch 2s infinite linear alternate-reverse;
+  }
+
+  .glitch-text::after {
+    left: -2px;
+    text-shadow: -2px 0 #00ffff;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch 3s infinite linear alternate-reverse;
+  }
+
+  .noise-overlay {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 9999;
+    animation: noise 0.2s infinite;
+  }
+
+  .scanline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(0, 255, 255, 0.1);
+    pointer-events: none;
+    z-index: 10000;
+    animation: scanline 2s linear infinite;
+  }
+
+  .tear-effect {
+    animation: tear 3s infinite;
+  }
+}
